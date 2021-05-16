@@ -1,6 +1,6 @@
 import time
 
-from go_parallel import gorun
+from go_parallel.go_parallel import gorun
 
 a = "sdfsdfsfsdfsdfsds"
 
