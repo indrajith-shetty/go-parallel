@@ -37,6 +37,17 @@ class ParallelRunner:
 
 
 def gorun(func, *args) -> ParallelRunner:
+    """
+    Run the function 'func' with the parameters '*args'.
+    Example :
+
+        runner = gorun(f, 5)
+        result = runner.get_result()
+
+    :param func: the function that needs to be executed asynchronously.
+    :param args: arguments that need to be passed to `func`
+    :return: Executes `func` asynchronously and returns an object of ParallelRunner.
+    """
     runner = ParallelRunner()
     runner.start(func, args)
     return runner
