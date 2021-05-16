@@ -1,2 +1,2 @@
 # go-parallel
-Utility function for delayed execution of functions.
+Utility function for running functions asynchronously.
