@@ -1,12 +1,15 @@
+[tool.poetry]
+name = "go-parallel"
+version = "0.1.1"
+description = ""
+authors = ["Indrajith Shetty <indrajitshetty@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+requests = ">=2.25.1"
+
+[tool.poetry.dev-dependencies]
+
 [build-system]
-requires = ["flit_core >=2,<4"]
-build-backend = "flit_core.buildapi"
-
-[tool.flit.metadata]
-module = "go_parallel"
-author = "indrajith"
-author-email = "indrajitshetty@gmail.com"
-home-page = "https://github.com/indrajith-shetty/go-parallel"
-classifiers = [ "License :: OSI Approved :: MIT License",]
-description-file = "README.md"
-
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
