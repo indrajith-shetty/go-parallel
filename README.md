@@ -17,9 +17,9 @@ def f(name):
     return name + " has changed"
 
 if __name__ == "__main__":
-    runner1 = gorun(f, "indra")
+    runner1 = gorun(f, "indra") # runs function `f` asynchronously.
     runner2 = gorun(f, "test")
 
-    print(runner1.get_result())
+    print(runner1.get_result()) # waits until the function call `f("in")` returns.
 
 ```
