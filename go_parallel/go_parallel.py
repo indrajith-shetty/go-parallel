@@ -36,6 +36,8 @@ class ParallelRunner:
         return self._result
 
 
+
+
 def gorun(func, *args) -> ParallelRunner:
     """
     Run the function 'func' with the parameters '*args'.
