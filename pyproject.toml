@@ -6,7 +6,7 @@ authors = ["Indrajith Shetty <indrajitshetty@gmail.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.8"
-requests = ">=2.25.1"
+pydantic = "*"
 
 [tool.poetry.dev-dependencies]
 

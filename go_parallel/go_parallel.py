@@ -15,7 +15,7 @@ class IParallelRunner:
 
 
 @dataclass(config=ParallelRunnerConfig)
-class ParallelRunner(IParallelRunner):
+class _ParallelRunner(IParallelRunner):
     recv_conn: connection.Connection = None
     send_conn: connection.Connection = None
     result: object = None
@@ -46,7 +46,7 @@ class ParallelRunner(IParallelRunner):
         return self.result
 
 
-def gorun(func: Callable, *args) -> ParallelRunner:
+def gorun(func: Callable, *args) -> _ParallelRunner:
     """
     Run the function 'func' asynchronously with the parameters '*args'.
     This function returns immediately.
@@ -59,6 +59,6 @@ def gorun(func: Callable, *args) -> ParallelRunner:
     :param args: arguments that need to be passed to `func`
     :return: Executes `func` asynchronously and returns an object of ParallelRunner.
     """
-    runner: IParallelRunner = ParallelRunner(method="multiprocessing")
+    runner: IParallelRunner = _ParallelRunner(method="multiprocessing")
     runner.start(func, args)
     return runner

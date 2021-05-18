@@ -4,14 +4,14 @@ Utility function for running functions asynchronously.
 
 Install:
 
-* pip install go-parallel
+* `pip install go-parallel`
 
 Usage:
 
 ```python
 
 import time
-from go_parallel.go_parallel import gorun, ParallelRunner
+from go_parallel.go_parallel import gorun, IParallelRunner
 
 
 def f(name):
@@ -20,10 +20,10 @@ def f(name):
 
 
 if __name__ == "__main__":
-    runner1: ParallelRunner = gorun(f, "in")  # runs function `f` asynchronously.
-    runner2: ParallelRunner = gorun(f, "test")
+    runner1: IParallelRunner = gorun(f, "in")  # runs function `f` asynchronously. Returns immediately.
+    runner2: IParallelRunner = gorun(f, "test")
 
-    result = runner1.get_result()
-    print(result)  # waits until the function call `f("in")` returns.
+    result = runner1.get_result()  # waits until the function call `f("in")` returns. 
+    print(result)
 
 ```

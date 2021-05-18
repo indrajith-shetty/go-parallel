@@ -1,6 +1,6 @@
 import time
 
-from go_parallel.go_parallel import gorun
+from go_parallel.go_parallel import gorun, IParallelRunner
 
 
 def f(name):
@@ -16,7 +16,7 @@ def sleeper(seconds):
 
 
 if __name__ == "__main__":
-    runner = gorun(sleeper, 5)
-    runner2 = gorun(f, "i")
+    runner: IParallelRunner = gorun(sleeper, 5)
+    runner2: IParallelRunner = gorun(f, "i")
     print(runner2.get_result())
     print(runner.get_result())
