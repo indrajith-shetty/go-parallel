@@ -9,7 +9,8 @@ Usage:
 ```python
 
 import time
-from go_parallel.go_parallel import gorun
+from go_parallel.go_parallel import gorun, ParallelRunner
+
 
 
 def f(name):
@@ -17,9 +18,10 @@ def f(name):
     return name + " has changed"
 
 if __name__ == "__main__":
-    runner1 = gorun(f, "indra") # runs function `f` asynchronously.
-    runner2 = gorun(f, "test")
-
-    print(runner1.get_result()) # waits until the function call `f("in")` returns.
+    runner1 : ParallelRunner  = gorun(f, "in") # runs function `f` asynchronously.
+    runner2 : ParallelRunner  = gorun(f, "test")
+    
+    result = runner1.get_result()
+    print(result) # waits until the function call `f("in")` returns.
 
 ```
