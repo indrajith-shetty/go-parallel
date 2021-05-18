@@ -1,19 +1,29 @@
-from dataclasses import dataclass
 from multiprocessing import Pipe, connection, Process
 from threading import Thread
+from typing import Callable
 from typing import Union
 
+from pydantic import constr
+from pydantic.dataclasses import dataclass
 
-@dataclass
-class ParallelRunner:
-    _recv_conn: connection.Connection = None
-    _send_conn: connection.Connection = None
-    _result: object = None
-    _p: Union[Thread, Process] = None
-    _method: str = 'multiprocessing'
+from go_parallel.config import ParallelRunnerConfig
+
+
+class IParallelRunner:
+    def get_result(self) -> object:
+        pass
+
+
+@dataclass(config=ParallelRunnerConfig)
+class ParallelRunner(IParallelRunner):
+    recv_conn: connection.Connection = None
+    send_conn: connection.Connection = None
+    result: object = None
+    p: Union[Thread, Process] = None
+    method: constr(regex=r"\b((multiprocessing|multithreading))\b") = "multiprocessing"
 
     def __post_init__(self):
-        self._recv_conn, self._send_conn = Pipe(duplex=False)
+        self.recv_conn, self.send_conn = Pipe(duplex=False)
 
     def _executor(self, conn: connection.Connection, f, args):
         res = f(*args)
@@ -21,24 +31,25 @@ class ParallelRunner:
         conn.close()
 
     def start(self, func, args):
-        self._p = Process(target=self._executor, args=(self._send_conn, func, args))
+        self.p = Process(target=self._executor, args=(self.send_conn, func, args))
         # self.p = Thread(target=self.executor, args=(self.send_conn, func, args))
-        self._p.start()
+        self.p.start()
 
     def _join(self):
-        self._p.join()
+        self.p.join()
 
     def get_result(self) -> object:
-        if self._result is None:
+        if self.result is None:
             self._join()
-            self._result = self._recv_conn.recv()
-            self._recv_conn.close()
-        return self._result
+            self.result = self.recv_conn.recv()
+            self.recv_conn.close()
+        return self.result
 
 
-def gorun(func, *args) -> ParallelRunner:
+def gorun(func: Callable, *args) -> ParallelRunner:
     """
-    Run the function 'func' with the parameters '*args'.
+    Run the function 'func' asynchronously with the parameters '*args'.
+    This function returns immediately.
     Example :
 
         runner = gorun(f, 5)
@@ -48,6 +59,6 @@ def gorun(func, *args) -> ParallelRunner:
     :param args: arguments that need to be passed to `func`
     :return: Executes `func` asynchronously and returns an object of ParallelRunner.
     """
-    runner = ParallelRunner()
+    runner: IParallelRunner = ParallelRunner(method="multiprocessing")
     runner.start(func, args)
     return runner
