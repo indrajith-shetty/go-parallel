@@ -59,6 +59,6 @@ def gorun(func: Callable, *args) -> _ParallelRunner:
     :param args: arguments that need to be passed to `func`
     :return: Executes `func` asynchronously and returns an object of ParallelRunner.
     """
-    runner: IParallelRunner = _ParallelRunner(method="multiprocessing")
+    runner: _ParallelRunner = _ParallelRunner(method="multiprocessing")
     runner.start(func, args)
     return runner
