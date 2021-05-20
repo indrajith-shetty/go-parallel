@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "go-parallel"
-version = "0.1.2"
-description = ""
+version = "0.1.3"
+description = "Utility function for running functions asynchronously."
 authors = ["Indrajith Shetty <indrajitshetty@gmail.com>"]
 
 [tool.poetry.dependencies]
