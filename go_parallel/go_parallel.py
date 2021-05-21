@@ -1,12 +1,12 @@
 from multiprocessing import Pipe, connection, Process
 from threading import Thread
-from typing import Callable
 from typing import Union
 
 from pydantic import constr
 from pydantic.dataclasses import dataclass
+from pydantic.typing import Callable
 
-from go_parallel.config import ParallelRunnerConfig
+from go_parallel.pydantic_config import ParallelRunnerConfig
 
 
 class IParallelRunner:
@@ -25,12 +25,12 @@ class _ParallelRunner(IParallelRunner):
     def __post_init__(self):
         self.recv_conn, self.send_conn = Pipe(duplex=False)
 
-    def _executor(self, conn: connection.Connection, f, args):
+    def _executor(self, conn: connection.Connection, f: Callable, args):
         res = f(*args)
         conn.send(res)
         conn.close()
 
-    def start(self, func, args):
+    def start(self, func: Callable, args):
         self.p = Process(target=self._executor, args=(self.send_conn, func, args))
         # self.p = Thread(target=self.executor, args=(self.send_conn, func, args))
         self.p.start()
